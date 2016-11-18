@@ -1,0 +1,536 @@
+<?php
+
+require_once 'scoopit.api.php';
+/**
+ * Implements hook_menu().
+
+function scoopit_drupal_dev_menu() {
+    $items['scoopit_drupal_dev/custom'] = array(
+        'title' => 'Custom page',
+        'page callback' => 'scoopit_drupal_dev_custom',
+        'access arguments' => array('access content'),
+    );
+
+    return $items;
+} */
+
+/**
+ * Custom callback function.
+
+function scoopit_drupal_dev_custom() {
+    return '<p>Hello world</p>';
+}
+*/
+
+/**
+ * Implementation of hook_menu().
+ */
+function scoopit_menu() {
+    $items = array();
+
+    //this is for defining the template to use by drupal
+    //more like forcing all entries with this url to use a specific template
+    //here
+    /*$items['node/%node/iframe'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'node_view',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );*/
+
+    $items['scoopit-api/add'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_add',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/update'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_update',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/delete'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_delete',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/list'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_list',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/get'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_get',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/request_token'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_request_token',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/authorize'] = array(
+        'title' => 'Iframe',
+        'page callback' => 'scoop_it_api_authorize',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['scoopit-api/services'] = array(
+        'title' => 'Scoop It Api Services',
+        'page callback' => 'scoop_it_api_services',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['admin/config/scoopit'] = array(
+        'title' => 'Scoopit Configuration',
+        'description' => 'Scoopit Configuration Page.',
+        'page callback' => 'scoopit_admin_settings',
+        'access arguments' => array('access administration pages'),
+        'file' => 'scoopit.admin.inc',
+        'file path' => drupal_get_path('module', 'scoopit'),
+    );
+
+    $items['admin/config/scoopit/scoopit-api-manager'] = array(
+        'title' => 'Api Configuration',
+        'description' => 'Scoopit Api Configuration Page.',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('scoopit_api_settings'),
+        'access arguments' => array('access administration pages'),
+		'type' => MENU_LOCAL_TASK,
+        'file' => 'scoopit.admin.inc',
+        'file path' => drupal_get_path('module', 'scoopit'),
+    );
+
+	$items['admin/config/scoopit/scoopit-mapping-manager'] = array(
+        'title' => 'Mapping Configuration',
+        'description' => 'Scoopit Mapping Configuration Page.',
+        'page callback' => 'scoopit_mapping_settings',
+        //'page arguments' => array('scoopit_mapping_settings'),
+        'access arguments' => array('access administration pages'),
+		'type' => MENU_LOCAL_TASK,
+        'file' => 'scoopit.admin.inc',
+        'file path' => drupal_get_path('module', 'scoopit'),
+    );
+
+	$items['admin/config/scoopit/scoopit-author-manager'] = array(
+        'title' => 'Author Configuration',
+        'description' => 'Scoopit Author Configuration Page.',
+        'page callback' => 'scoopit_author_settings',
+        'access arguments' => array('access administration pages'),
+		'type' => MENU_LOCAL_TASK,
+        'file' => 'scoopit.admin.inc',
+        'file path' => drupal_get_path('module', 'scoopit'),
+    );
+
+	$items['scoopit-api/get-remote-content-type'] = array(
+		'title' => 'Iframe',
+		'page callback' => 'scoop_it_api_get_remote_content_type',
+		'page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_LOCAL_TASK,
+	);
+
+	$items['scoopit-api/get-local-content-type'] = array(
+		'title' => 'Iframe',
+		'page callback' => 'scoop_it_api_get_local_content_type',
+		'page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_LOCAL_TASK,
+	);
+
+	$items['scoopit-api/get-authors'] = array(
+		'title' => 'Iframe',
+		'page callback' => 'scoop_it_api_get_authors',
+		'page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_LOCAL_TASK,
+	);
+
+	$items['scoopit-api/save-author-user'] = array(
+		'title' => 'Iframe',
+		'page callback' => 'scoopit_api_save_author',
+		'page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_LOCAL_TASK,
+	);
+
+    return $items;
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function scoopit_preprocess_html(&$vars) {
+    /*if (arg(2) === 'iframe') {
+        $vars['theme_hook_suggestion'] = 'html__iframe';
+        //$vars['template'] = 'node--scoopit';
+        //$vars['directory'] = drupal_get_path('module', 'scoopit');// . '/templates';
+    }*/
+	$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
+	$link = url($path, array('absolute' => TRUE));
+
+    if ($path === 'scoopit-api/services') {
+        $vars['theme_hook_suggestion'] = 'html__services';
+        //$vars['template'] = 'node--scoopit';
+        //$vars['directory'] = drupal_get_path('module', 'scoopit');// . '/templates';
+    }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function scoopit_preprocess_page(&$vars) {
+    if (arg(2) === 'iframe') {
+        $vars['theme_hook_suggestion'] = 'page__iframe';
+        //$vars['template'] = 'node--scoopit';
+        //$vars['directory'] = drupal_get_path('module', 'scoopit');// . '/templates';
+    }
+    if(isset($vars['page']['content']['system_main']['nodes']))
+	{
+		foreach($vars['page']['content']['system_main']['nodes'] as &$node)
+		{
+            if(isset($node) && isset($node['field_scoopit_id'])){
+			    unset($node['field_scoopit_id']);//hide scoopit id field from display in the front end.
+            }
+		}
+	}
+}
+
+/**
+ * Implements hook_theme().
+ */
+function scoopit_theme($existing, $type, $theme, $path) {
+    $theme = array();
+    /*$theme['node__scoopit'] = array(
+        'render element' => 'content',
+        'base hook' => 'node',
+        'template' => 'node--scoopit',
+        'path' => drupal_get_path('module', 'scoopit') . '/templates',
+    );*/
+    $theme['page__iframe'] = array(
+        'render element' => 'content',
+        'base hook' => 'node',
+        'template' => 'page--iframe',
+        'path' => drupal_get_path('module', 'scoopit') . '/templates',
+    );
+    $theme['html__iframe'] = array(
+        'render element' => 'content',
+        'base hook' => 'node',
+        'template' => 'html--iframe',
+        'path' => drupal_get_path('module', 'scoopit') . '/templates',
+    );
+    $theme['html__services'] = array(
+        'render element' => 'content',
+        'base hook' => 'node',
+        'template' => 'html--services',
+        'path' => drupal_get_path('module', 'scoopit') . '/templates',
+    );
+    return $theme;
+}
+
+
+/**
+ * Implements hook_help().
+ */
+function scoopit_help($path, $arg) {
+	switch ($path) {
+		case 'admin/config/scoopit':
+			return t('This is some help text for the scoopit settings page.');
+
+		case 'admin/help#scoopit':
+			$output = '<p>' . t('This is help text for the scoopit help page') . '</p>';
+			return $output;
+	}
+}
+
+function scoopit_form_alter(&$form, &$form_state, $id){
+
+	switch($id){
+		case 'scoopit_api_settings':
+			$form['#validate'][] = 'scoopit_api_user_generation_validation';
+			$form['#submit'][] = 'scoopit_api_user_generation_submission';
+			$form['actions']['submit']['#value'] = 'Generate Credentials';
+			$path = drupal_get_path('module', 'scoopit');
+			$form['#attached']['js'][] = $path . '/dna.js/custom.js';
+			$form['#attached']['js'][] = $path . '/dna.js/ajax_processor.js';
+			break;
+		case 'scoopit_mapping_settings_form':
+			$form['#validate'][] = 'scoopit_api_mapping_validation';
+			$form['#submit'][] = 'scoopit_api_save_mapping';
+			$form['actions']['submit']['#value'] = 'Save Mapping';
+			$path = drupal_get_path('module', 'scoopit');
+			$form['#attached']['js'][] = $path . '/dna.js/custom.js';
+			$form['#attached']['js'][] = $path . '/dna.js/ajax_processor.js';
+			$form['#attached']['js'][] = $path . '/dna.js/autoload_fields.js';
+			break;
+		case 'scoopit_author_role_settings_form':
+			$form['#validate'][] = 'scoopit_api_author_role_validation';
+			$form['#submit'][] = 'scoopit_api_save_author_role';
+			$form['actions']['submit']['#value'] = 'Save Author Role Settings';
+			$path = drupal_get_path('module', 'scoopit');
+			$form['#attached']['js'][] = $path . '/dna.js/custom.js';
+			$form['#attached']['js'][] = $path . '/dna.js/ajax_processor.js';
+			$form['#attached']['js'][] = $path . '/dna.js/autoload_fields.js';
+			break;
+	}
+
+	$form['field_scoopit_id']['#access'] = false;
+}
+
+function scoopit_api_user_generation_validation(&$form, &$form_state) {
+	// Validation form here
+
+	$validatorObj = DnaValidatorUtility::getInstance();
+
+	$scoopit_email = $_POST['scoopit_email'];
+
+	global $user;
+	$resp = $validatorObj->isValid($scoopit_email,"email","Email",true);
+	if(!$resp->result){
+		form_set_error($user->name, $resp->message);
+	}
+
+}
+
+function scoopit_api_mapping_validation(&$form, &$form_state)
+{
+	// Validation form here
+
+	$validatorObj = DnaValidatorUtility::getInstance();
+
+	$remote_type = isset($_POST['remote_type'])?$_POST['remote_type']:'';
+	$remote_field = isset($_POST['remote_field'])?$_POST['remote_field']:'';
+	$local_type = isset($_POST['local_type'])?$_POST['local_type']:'';
+	$local_field = isset($_POST['local_field'])?$_POST['local_field']:'';
+
+
+	global $user;
+	$resp = $validatorObj->isValid($remote_type, "drupalfields", "Remote Type", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+	$resp = $validatorObj->isValid($remote_field, "drupalfields", "Remote Field", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+	$resp = $validatorObj->isValid($local_type, "drupalfields", "Local Type", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+	$resp = $validatorObj->isValid($local_field, "drupalfields", "Local Field", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+}
+
+function scoopit_api_user_generation_submission (&$form, &$form_state) {
+	global $user;
+	global $drupal_hash_salt;
+
+
+	$oAuthObject = DnaMainUtility::getOauth();
+
+	$email = $_POST['scoopit_email'];
+
+	$result = db_select('scoopit_api_users', 'c')
+		->fields('c')
+		->condition('email', $email, '=')
+		->execute()
+		->fetchAssoc();
+
+
+	$client_key = md5($drupal_hash_salt.$email);
+	$client_secret = md5($drupal_hash_salt.time().$email.'password');
+
+
+	if(!$result){
+		//lets install OauthMetaData
+		DnaMainUtility::installOauthTables();
+
+		$values = array(
+			array(
+				'email' => $email,
+				'consumer_key' => $client_key,
+				'consumer_secret' => $client_secret,
+				'status' => 'Active',
+				'created_date' => REQUEST_TIME,
+			),
+		);
+		$query = db_insert('scoopit_api_users')->fields(array('email', 'consumer_key', 'consumer_secret', 'status', 'created_date'));
+		foreach ($values as $record) {
+			$query->values($record);
+		}
+		$id = $query->execute();
+	}
+	else
+	{
+		$id = $result['id'];
+
+		$num_updated = db_update('scoopit_api_users') // Table name no longer needs {}
+		->fields(array(
+			'consumer_key' => $client_key,
+			'consumer_secret' => $client_secret,
+		))
+			->condition('email', $email, '=')
+			->execute();
+	}
+
+	$result2 = db_select('oauth_clients', 'c')
+		->fields('c')
+		->condition('client_id', $client_key, '=')
+		->execute()
+		->fetchAssoc();
+
+	//update oauth table
+	$redirect_uri = SCOOPIT_API_LOCAL_SERVER .'scoopit-api/authorize';
+
+	if(!$result2){
+
+		$values = array(
+			array(
+				'client_id' => $client_key,
+				'client_secret' => $client_secret,
+				'redirect_uri' => $redirect_uri,
+				'user_id' => $id,
+			),
+		);
+		$query = db_insert('oauth_clients')->fields(array('client_id', 'client_secret', 'redirect_uri','user_id'));
+		foreach ($values as $record) {
+			$query->values($record);
+		}
+		$id2 = $query->execute();
+	}
+	else
+	{
+		$id2 = $result2['client_id'];
+
+		$num_updated2 = db_update('oauth_clients') // Table name no longer needs {}
+		->fields(array(
+			'client_secret' => $client_secret,
+			'redirect_uri' => $redirect_uri,
+			'user_id' => $id,
+		))
+			->condition('client_id', $client_key, '=')
+			->execute();
+	}
+
+}
+
+function scoopit_api_save_mapping (&$form, &$form_state) {
+	global $user;
+	global $drupal_hash_salt;
+
+	$remote_type = isset($_POST['remote_type'])?$_POST['remote_type']:'';
+	$remote_field = isset($_POST['remote_field'])?$_POST['remote_field']:'';
+	$local_type = isset($_POST['local_type'])?$_POST['local_type']:'';
+	$local_field = isset($_POST['local_field'])?$_POST['local_field']:'';
+
+	$result = db_select('scoopit_api_content_map', 'c')
+		->fields('c')
+		->condition('remote_type', $remote_type, '=')
+		->condition('remote_field_name', $remote_field, '=')
+		->condition('local_type', $local_type, '=')
+		->condition('local_field_name', $local_field, '=')
+		->execute()
+		->fetchAssoc();
+
+	if(!$result){
+
+		$values = array(
+			array(
+				'remote_type' => $remote_type,
+				'remote_field_name' => $remote_field,
+				'local_type' => $local_type,
+				'local_field_name' => $local_field,
+				'created_date' => REQUEST_TIME,
+				'created_by' => $user->name,
+			),
+		);
+		$query = db_insert('scoopit_api_content_map')->fields(array('remote_type', 'remote_field_name', 'local_type', 'local_field_name', 'created_date', 'created_by'));
+
+		foreach ($values as $record) {
+			$query->values($record);
+		}
+		$id = $query->execute();
+		if($id)
+		{
+			//check if scoopit field exist
+			if(!scoop_it_check_local_content_type_for_scoopit_id_field($local_type))
+			{
+				//create the field if it does not exist
+				scoop_it_create_scoopit_id_field_for_local_content_type($local_type);
+			}
+		}
+	}
+	else
+	{
+		form_set_error($user->name, 'Mapping already exist');
+	}
+
+}
+
+function scoopit_api_author_role_validation(&$form, &$form_state)
+{
+	// Validation form here
+
+	$validatorObj = DnaValidatorUtility::getInstance();
+
+	$scoopit_role = isset($_POST['scoopit_role'])?$_POST['scoopit_role']:NULL;
+
+	global $user;
+	$resp = $validatorObj->isValid($scoopit_role, "none", "Scoopit Role", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+}
+
+function scoopit_api_save_author_role (&$form, &$form_state)
+{
+	global $user;
+
+	$scoopit_role = isset($_POST['scoopit_role'])?$_POST['scoopit_role']:NULL;
+
+	variable_set('scoopit_author_role', $scoopit_role);
+
+}
+
+function scoopit_api_save_author ()
+{
+	global $user;
+
+	$scoopItUserSel = isset($_POST['scoopItUserSel'])?$_POST['scoopItUserSel']:NULL;
+
+	variable_set('scoopit_author_id', $scoopItUserSel);
+
+	die("Author Selected!");
+
+}
+
+function scoopit_init() {
+  if (arg(0) == 'admin') {
+    $path = drupal_get_path('module', 'scoopit');
+    drupal_add_js($path . '/custom.js');
+  }
+}

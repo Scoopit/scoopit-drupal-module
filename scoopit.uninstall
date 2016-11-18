@@ -1,0 +1,11 @@
+<?php
+// scoopit.install
+/**
+ * Implementation of hook_schema().
+ */
+function scoopit_uninstall() {
+	//remove the database table
+	/**/db_query('DROP TABLE IF EXISTS {scoopit_api_users}');
+	db_query('DROP TABLE IF EXISTS {scoopit_api_sync}');
+	db_query('DROP TABLE IF EXISTS {scoopit_api_content_map}');
+}

@@ -1,0 +1,9 @@
+name = Scoop it
+description = ScoopIt web service implementation
+package = ScoopIt
+
+core = 7.x
+
+files[] = scoopit.admin.inc
+files[] = scoopit.module
+configure = admin/config/scoopit
