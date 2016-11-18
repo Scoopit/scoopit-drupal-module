@@ -1,0 +1,1 @@
+# scoopit-dupal-module
