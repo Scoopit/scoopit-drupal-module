@@ -25,7 +25,7 @@ class DnaMainService
         $this->utilObj = new DnaMainUtility();
     }
 
-    public function createNode($nodeContentType, $nodeFieldValues, $nodeTitle, $status, $promoted_to_front_page = 1, $comment_disabled = 0)
+    public function createNode($nodeContentType, $nodeFieldValues, $nodeTitle, $status, $promoteState, $comment_disabled = 0)
     {
         //global $user;
         //needs checking
@@ -153,7 +153,7 @@ class DnaMainService
 
         $node->uid = ($author_id) ? $author_id : 1; //$user->uid;
         $node->status = (trim($status) == 'published') ? 1 : 0; //(1 or 0): published or not
-        $node->promote = $promoted_to_front_page; //(1 or 0): promoted to front page
+        $node->promote = (trim($promoteState)=='promoted')?1:0; //(1 or 0): promoted to front page
         $node->comment = $comment_disabled; // 0 = comments disabled, 1 = read only, 2 = read/write
 
         $node->format = 3; //set format to full html // 1 means filtered html, 2 means full html, 3 is php
@@ -194,7 +194,7 @@ class DnaMainService
         node_delete($nodeId);
     }
 
-    public function updateNode($nodeId, $nodeFieldValues, $nodeTitle, $status)
+    public function updateNode($nodeId, $nodeFieldValues, $nodeTitle, $status, $promoteState)
     {
         $node = node_load($nodeId);
 
@@ -328,6 +328,7 @@ if (trim($fieldInfo['widget']['type']) == 'text_textarea_with_summary') {
             }
 
             $node->status = (trim($status) == 'published') ? 1 : 0; //(1 or 0): published or not
+            $node->promote = (trim($promoteState)=='promoted')?1:0; //(1 or 0): promoted to front page
 
 if (isset($nodeFieldValues['publicationDate'])) {
     $createdTime = strtotime($nodeFieldValues['publicationDate']);
@@ -432,7 +433,7 @@ $tid = key($term);
         $nodeUpdates = array();
         foreach ($nodeVars as $nodeData) {
             $nodeUpdates[] = $this->createNode($nodeData->node_content_type, $nodeData->node_field_values, $nodeData->node_title, $nodeData->state,
-$nodeData->promoted_to_front_page, $nodeData->comment_disabled);
+$nodeData->promoteState, $nodeData->comment_disabled);
         }
 
         return $nodeUpdates;
@@ -468,7 +469,7 @@ $nodeData->promoted_to_front_page, $nodeData->comment_disabled);
     {
         $nodeIdUpdates = array();
         foreach ($nodeVars as $nodeArgObj) {
-            $nodeIdUpdates[] = $this->updateNode($nodeArgObj->local_object_id, $nodeArgObj->node_field_values, $nodeArgObj->node_title, $nodeArgObj->state);
+            $nodeIdUpdates[] = $this->updateNode($nodeArgObj->local_object_id, $nodeArgObj->node_field_values, $nodeArgObj->node_title, $nodeArgObj->state, $nodeArgObj->promoteState);
         }
 
         return $nodeIdUpdates;
