@@ -16,8 +16,8 @@
  */
 function scoopit_admin_settings() {
 	$returnObj = array(
-		'#markup' => "<div><p><a href='".SCOOPIT_API_LOCAL_SERVER."admin/config/scoopit/scoopit-api-manager'>Api Settings</a></p></div>
-			<div><p><a href='".SCOOPIT_API_LOCAL_SERVER."admin/config/scoopit/scoopit-mapping-manager'>Mapping Settings</a></p></div>"
+		'#markup' => "<div><p><a href='".SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',SCOOPIT_API_LOCAL_SERVER."/admin")."/config/scoopit/scoopit-api-manager'>Api Settings</a></p></div>
+			<div><p><a href='".SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',SCOOPIT_API_LOCAL_SERVER."/admin")."/config/scoopit/scoopit-mapping-manager'>Mapping Settings</a></p></div>"
 	);
 	return $returnObj;
 }
@@ -74,7 +74,7 @@ function scoopit_mapping_settings() {
 			->condition('id', $del_id, '=')
 			->execute();
 
-		header('Location: '.SCOOPIT_API_LOCAL_SERVER.'admin/config/scoopit/scoopit-mapping-manager');
+		header('Location: '.SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',SCOOPIT_API_LOCAL_SERVER."/admin").'/config/scoopit/scoopit-mapping-manager');
 	}
 
 	$extra_inclusion = "";
@@ -200,7 +200,7 @@ function scoopit_mapping_settings_list() {
 			$data->remote_field_name,
 			$data->created_by,
 			date('d-m-Y H:i:s', $data->created_date),
-			l('Delete ', SCOOPIT_API_LOCAL_SERVER.'admin/config/scoopit/scoopit-mapping-manager', array('query' => array('del_id' => $data->id))),
+			l('Delete ', SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',SCOOPIT_API_LOCAL_SERVER."/admin").'/config/scoopit/scoopit-mapping-manager', array('query' => array('del_id' => $data->id))),
 		);
 	}
 

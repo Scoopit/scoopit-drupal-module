@@ -211,9 +211,9 @@ function scoopit_preprocess_page(&$vars) {
 	{
 		foreach($vars['page']['content']['system_main']['nodes'] as &$node)
 		{
-            if(isset($node) && isset($node['field_scoopit_id'])){
-			    unset($node['field_scoopit_id']);//hide scoopit id field from display in the front end.
-            }
+		  if (isset($node['field_scoopit_id'])){
+            unset($node['field_scoopit_id']);//hide scoopit id field from display in the front end.
+          }
 		}
 	}
 }
@@ -404,7 +404,7 @@ function scoopit_api_user_generation_submission (&$form, &$form_state) {
 		->fetchAssoc();
 
 	//update oauth table
-	$redirect_uri = SCOOPIT_API_LOCAL_SERVER .'scoopit-api/authorize';
+	$redirect_uri = SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',SCOOPIT_API_LOCAL_SERVER."/scoopit-api").'/authorize';
 
 	if(!$result2){
 
@@ -435,6 +435,14 @@ function scoopit_api_user_generation_submission (&$form, &$form_state) {
 			->condition('client_id', $client_key, '=')
 			->execute();
 	}
+
+  $scoopit_oauth_var = 'scoopit_oauth_var';
+
+  $scoopit_oauth_val = variable_get($scoopit_oauth_var,'');
+
+  $scoopit_oauth_val.= $id2."|";
+
+  variable_set($scoopit_oauth_var, $scoopit_oauth_val);
 
 }
 

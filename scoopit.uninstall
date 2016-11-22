@@ -6,6 +6,33 @@
 function scoopit_uninstall() {
 	//remove the database table
 	/**/db_query('DROP TABLE IF EXISTS {scoopit_api_users}');
-	db_query('DROP TABLE IF EXISTS {scoopit_api_sync}');
-	db_query('DROP TABLE IF EXISTS {scoopit_api_content_map}');
+	//db_query('DROP TABLE IF EXISTS {scoopit_api_sync}');
+	//db_query('DROP TABLE IF EXISTS {scoopit_api_content_map}');
+
+	  $scoopit_oauth_var = 'scoopit_oauth_var';
+
+	  $scoopit_oauth_val = variable_get($scoopit_oauth_var,'');
+
+	  if(trim($scoopit_oauth_val)!='')
+	  {
+	  	$scoopit_oauth_id_arr = explode('|',$scoopit_oauth_val);
+	  	foreach($scoopit_oauth_id_arr as $oauth_id)
+	  	{
+	  		try{
+	  		$qry = "DELETE FROM {oauth_clients} where client_id = '$oauth_id'";
+	  		}
+				db_query($qry);
+
+				echo $qry.'<br/>';
+	  		}
+	  		catch(Exception $ex)
+	  		{
+
+	  		}
+	  	}
+
+die('finished');
+  		//variable_set($scoopit_oauth_var, '');
+	  }
+
 }

@@ -34,7 +34,8 @@
 
 header('Content-Type: application/xrds+xml');
 
-$server = SCOOPIT_API_LOCAL_SERVER;
+$server = SCOOPIT_API_LOCAL_SERVER.'/';
+$server = SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',$server);
 
 echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 

@@ -4,144 +4,180 @@
  * Implementation of hook_schema().
  */
 function scoopit_schema() {
-	$schema['scoopit_api_users'] = array(
-		'description' => 'Stores scoopit api user credential data.',
-		'fields' => array(
-			'id' => array(
-				'description' => 'Primary Key: Unique user ID.',
-				'type' => 'serial',
-				'not null' => TRUE,
-			),
-			'consumer_key' => array(
-				'description' => 'Unique user key.',
-				'type' => 'varchar',
-				'length' => '255',
-				'not null' => TRUE,
-				'default' => '',
-			),
-			'consumer_secret' => array(
-				'description' => 'User’s secret (hashed).',
-				'type' => 'varchar',
-				'length' => '255',
-				'not null' => TRUE,
-				'default' => '',
-			),
-			'email' => array(
-				'description' => 'User’s e-mail address.',
-				'type' => 'varchar',
-				'length' => '255',
-				'not null' => FALSE,
-			),/*
+  $schema['scoopit_api_users'] = array(
+    'description' => 'Stores scoopit api user credential data.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Unique user ID.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'consumer_key' => array(
+        'description' => 'Unique user key.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'consumer_secret' => array(
+        'description' => 'User’s secret (hashed).',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'email' => array(
+        'description' => 'User’s e-mail address.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),/*
 			'created_date' => array(
 				'description' => 'User’s created time.',
 				'type' => 'timestamp',
 				'mysql_type' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
 				'not null' => TRUE,
 			),*/
-			'created_date' => array(
-				'description' => t('The timestamp for when the user was created.'),
-				'type' => 'int',
-				'unsigned' => TRUE,
-				'not null' => TRUE,
-				'default' => 0,
-			),
-			'status' => array(
-				'description' => 'User’s status.',
-				'type' => 'varchar',
-				'length' => '50',
-				'not null' => TRUE,
-				'default' => 'Active',
-			),
-		),
-		'primary key' => array('id'),
-	);
+      'created_date' => array(
+        'description' => t('The timestamp for when the user was created.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'status' => array(
+        'description' => 'User’s status.',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+        'default' => 'Active',
+      ),
+    ),
+    'primary key' => array('id'),
+  );
 
-	$schema['scoopit_api_sync'] = array(
-		'description' => 'Stores scoopit api content sync data.',
-		'fields' => array(
-			'id' => array(
-				'description' => 'Primary Key: Unique user ID.',
-				'type' => 'serial',
-				'not null' => TRUE,
-			),
-			'content_id' => array(
-				'description' => t('The id for local content.'),
-				'type' => 'int',
-				'not null' => TRUE,
-			),
-			'remote_id' => array(
-				'description' => t('The id for remote content'),
-				'type' => 'int',
-				'not null' => TRUE,
-			),
-			'created_date' => array(
-				'description' => t('The timestamp for when the map was created.'),
-				'type' => 'int',
-				'not null' => TRUE,
-			),
-			'modified_date' => array(
-				'description' => t('The timestamp for when the map was modified.'),
-				'type' => 'int',
-				'not null' => TRUE,
-			),
-		),
-		'primary key' => array('id'),
-		'unique keys' => array(
-			'content_id' => array('content_id', 'remote_id')
-		),
-	);
+  $schema['scoopit_api_sync'] = array(
+    'description' => 'Stores scoopit api content sync data.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Unique user ID.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'content_id' => array(
+        'description' => t('The id for local content.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'remote_id' => array(
+        'description' => t('The id for remote content'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'created_date' => array(
+        'description' => t('The timestamp for when the map was created.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'modified_date' => array(
+        'description' => t('The timestamp for when the map was modified.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'content_id' => array('content_id', 'remote_id')
+    ),
+  );
 
-	$schema['scoopit_api_content_map'] = array(
-		'description' => 'Stores scoopit api content mapping data.',
-		'fields' => array(
-			'id' => array(
-				'description' => 'Primary Key: Unique map ID.',
-				'type' => 'serial',
-				'not null' => TRUE,
-			),
-			'local_type' => array(
-				'description' => 'local field type for object',
-				'type' => 'varchar',
-				'length' => '50',
-				'not null' => TRUE,
-			),
-			'remote_type' => array(
-				'description' => 'remote field type for object',
-				'type' => 'varchar',
-				'length' => '50',
-				'not null' => TRUE,
-			),
-			'local_field_name' => array(
-				'description' => 'local field name for object',
-				'type' => 'varchar',
-				'length' => '100',
-				'not null' => TRUE,
-			),
-			'remote_field_name' => array(
-				'description' => 'remote field name for object',
-				'type' => 'varchar',
-				'length' => '100',
-				'not null' => TRUE,
-			),
-			'created_date' => array(
-				'description' => t('The timestamp for when the map was created.'),
-				'type' => 'int',
-				'not null' => TRUE,
-			),
-			'created_by' => array(
-				'description' => t('The person that created the map.'),
-				'type' => 'varchar',
-				'length' => '50',
-				'not null' => TRUE,
-			),
-		),
-		'primary key' => array('id'),
-		'unique keys' => array(
-			'local_type' => array('local_type', 'remote_type', 'local_field_name', 'remote_field_name')
-		),
-	);
+  $schema['scoopit_api_content_map'] = array(
+    'description' => 'Stores scoopit api content mapping data.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Unique map ID.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'local_type' => array(
+        'description' => 'local field type for object',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+      'remote_type' => array(
+        'description' => 'remote field type for object',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+      'local_field_name' => array(
+        'description' => 'local field name for object',
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => TRUE,
+      ),
+      'remote_field_name' => array(
+        'description' => 'remote field name for object',
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => TRUE,
+      ),
+      'created_date' => array(
+        'description' => t('The timestamp for when the map was created.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'created_by' => array(
+        'description' => t('The person that created the map.'),
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'local_type' => array(
+        'local_type',
+        'remote_type',
+        'local_field_name',
+        'remote_field_name'
+      )
+    ),
+  );
 
-	return $schema;
+  return $schema;
 }
 
-?>
+/**
+ * Implementation of hook_schema().
+ */
+function scoopit_uninstall() {
+  //remove the database table
+  /**/
+  db_query('DROP TABLE IF EXISTS {scoopit_api_users}');
+  db_query('DROP TABLE IF EXISTS {scoopit_api_sync}');
+  db_query('DROP TABLE IF EXISTS {scoopit_api_content_map}');
+
+  $scoopit_oauth_var = 'scoopit_oauth_var';
+
+  $scoopit_oauth_val = variable_get($scoopit_oauth_var, '');
+
+  if (trim($scoopit_oauth_val) != '') {
+    $scoopit_oauth_id_arr = explode('|', $scoopit_oauth_val);
+    foreach ($scoopit_oauth_id_arr as $oauth_id) {
+      try {
+        $qry = "DELETE FROM {oauth_clients} where client_id = '$oauth_id'";
+
+        db_query($qry);
+
+      } catch (Exception $ex) {
+
+      }
+    }
+
+    variable_set($scoopit_oauth_var, '');
+  }
+
+}
+  ?>

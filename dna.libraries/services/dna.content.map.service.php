@@ -185,7 +185,7 @@ class DnaContentMapService extends DnaMainService
 					///Users/dauduadetokunbo/Sites/projects/php/web/drupal/scoopit drupal project/SRC/sites/default/files/styles/large/public/champions_0_0.png
 					$remoteImageObject->url = (SCOOPIT_API_LOCAL_SERVER).str_replace('public:/',$realpath,$img_url);//site url to the image
 
-					$remoteImageObject->url = str_replace('///','/',$remoteImageObject->url);
+					$remoteImageObject->url = SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',$remoteImageObject->url);
 
 					foreach((isset($nodeField[$dataNode->language])?$nodeField[$dataNode->language]:$nodeField['und']) as $tempFid)
 					{
@@ -234,9 +234,9 @@ class DnaContentMapService extends DnaMainService
 					$remoteObject->content = $body;
 					$remoteObject->summary = $bodySummary;
 				}*/
-				if(isset($contentField[$dataNode->language][0]['value'])||isset($contentField[LANGUAGE_NONE][0]['value'])){
+              if(isset($contentField[$dataNode->language][0]['value'])||isset($contentField[LANGUAGE_NONE][0]['value'])){
 
-					foreach((isset($contentField[$dataNode->language])?$contentField[$dataNode->language]:$contentField[LANGUAGE_NONE]) as $tempBody)
+                foreach((isset($contentField[$dataNode->language])?$contentField[$dataNode->language]:$contentField[LANGUAGE_NONE]) as $tempBody)
 					{
 						$body = $tempBody['value'];
 						$remoteObject->$remote_field_name = $body;
@@ -263,12 +263,10 @@ class DnaContentMapService extends DnaMainService
 			$remoteObject->state = ($dataNode->status==1)?'published':'scheduled';
 			$remoteObject->id = $dataNode->field_scoopit_id[$dataNode->language][0]['value'];//force users to create this field
 			$remoteObject->publicationDate = date('Y-m-d H:i:s O', $dataNode->created);
-			$remoteObject->promoteState = $dataNode->promote == 1 ? 'promoted' : 'notPromoted';
-
 
 			//if(isset($remoteObject->url))
 			$remoteObject->url = SCOOPIT_API_LOCAL_SERVER.'/node/'.$dataNode->nid;
-			$remoteObject->url = str_replace('///','/',$remoteObject->url);
+			$remoteObject->url = SCOOPIT_API_SERVER_SCHEME.str_replace(array('///','//'),'/',$remoteObject->url);
 
 
 			//removing unwanted fields from the scoopit
@@ -352,12 +350,7 @@ class DnaContentMapService extends DnaMainService
 			$nodeData->node_field_values = $nodeFieldValues;
 			//$nodeData->term_reference_id = "";//to be determined later
 			//$nodeData->entity_id = "";//to be determined later
-			if(isset($dataObject->promoteState)){
-				$nodeData->promoteState = $dataObject->promoteState;
-			} else {
-				$nodeData->promoteState = "promoted";
-			}
-			//to be determined later
+			$nodeData->promoted_to_front_page = "1";//to be determined later
 			$nodeData->comment_disabled = "0";//to be determined later
 			$nodeData->local_object_id = $localObjectId;//to be determined later
 			$nodeData->state = $dataObject->state;//(==1)?'published':'scheduled';

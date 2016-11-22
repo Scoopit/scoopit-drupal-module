@@ -9,7 +9,8 @@ global $base_path;
 define('DNA_SESSION_NAME','DNA_SESSION');
 define('SERVER_ENVIRONMENT','Test');
 define('MAX_SCOOP_IT_OBJECT',50);
-define('SCOOPIT_API_LOCAL_SERVER',((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? 'https://' : 'http://') .$_SERVER["HTTP_HOST"].'/'.$base_path);
+define('SCOOPIT_API_LOCAL_SERVER',$_SERVER["HTTP_HOST"].'/'.$base_path);
+define('SCOOPIT_API_SERVER_SCHEME',((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? 'https://' : 'http://'));
 define('SCOOPIT_API_VERSION','1.0');
 
 require_once "scoopit.library.loader.php";
@@ -237,8 +238,8 @@ function scoop_it_api_get_authors()
 
 		if(in_array($author_role,$data->roles)){
 			$rows[] = array(
-				"id" => $data->uid,
-				"username" => $data->name
+				'id'=>$data->uid,
+				'username'=>$data->name,
 				//$data->roleid,
 				//'<input type="radio" name="scoopItUserSel" value="'.$data->uid.'" '.(($author_id==$data->uid)?' checked="checked" ':' ').' onclick="saveScoopitAuthor(this);" />',
 			);
