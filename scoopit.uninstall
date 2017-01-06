@@ -20,7 +20,6 @@ function scoopit_uninstall() {
 	  	{
 	  		try{
 	  		$qry = "DELETE FROM {oauth_clients} where client_id = '$oauth_id'";
-	  		}
 				db_query($qry);
 
 				echo $qry.'<br/>';

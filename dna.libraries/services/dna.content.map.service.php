@@ -263,7 +263,6 @@ class DnaContentMapService extends DnaMainService
 			$remoteObject->state = ($dataNode->status==1)?'published':'scheduled';
 			$remoteObject->id = $dataNode->field_scoopit_id[$dataNode->language][0]['value'];//force users to create this field
 			$remoteObject->publicationDate = date('Y-m-d H:i:s O', $dataNode->created);
-			$remoteObject->promoteState = $dataNode->promote == 1 ? 'promoted' : 'notPromoted';
 
 			//if(isset($remoteObject->url))
 			$remoteObject->url = SCOOPIT_API_LOCAL_SERVER.'/node/'.$dataNode->nid;
@@ -351,11 +350,7 @@ class DnaContentMapService extends DnaMainService
 			$nodeData->node_field_values = $nodeFieldValues;
 			//$nodeData->term_reference_id = "";//to be determined later
 			//$nodeData->entity_id = "";//to be determined later
-			if(isset($dataObject->promoteState)){
-				$nodeData->promoteState = $dataObject->promoteState;
-			} else {
-				$nodeData->promoteState = "promoted";
-			}
+			$nodeData->promoted_to_front_page = "1";//to be determined later
 			$nodeData->comment_disabled = "0";//to be determined later
 			$nodeData->local_object_id = $localObjectId;//to be determined later
 			$nodeData->state = $dataObject->state;//(==1)?'published':'scheduled';

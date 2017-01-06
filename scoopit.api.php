@@ -104,11 +104,15 @@ function scoop_it_api_delete()
 	$dataObjectParam = isset($_POST["node_ids"])?$_POST["node_ids"]:NULL;
 	$dataObjects = json_decode($dataObjectParam);
 
-	if($dataObjects != NULL )
+	if($dataObjects != NULL || $dataObjectParam==='n' || $dataObjectParam==='[n]')
 	{
 
-		if(!is_array($dataObjects)){
+		if(!is_array($dataObjects) && !($dataObjectParam==='n' || $dataObjectParam==='[n]')){
 			$dataObjects = array($dataObjects);
+		}
+		else if($dataObjectParam==='n' || $dataObjectParam==='[n]')
+		{
+			$dataObjects = array('n');
 		}
 
 		$object_count = sizeof($dataObjects);

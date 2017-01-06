@@ -324,6 +324,7 @@ function scoopit_api_mapping_validation(&$form, &$form_state)
 	$remote_field = isset($_POST['remote_field'])?$_POST['remote_field']:'';
 	$local_type = isset($_POST['local_type'])?$_POST['local_type']:'';
 	$local_field = isset($_POST['local_field'])?$_POST['local_field']:'';
+	$local_type_field_format = isset($_POST['local_type_field_format'])?$_POST['local_type_field_format']:'';
 
 
 	global $user;
@@ -340,6 +341,10 @@ function scoopit_api_mapping_validation(&$form, &$form_state)
 		form_set_error($user->name, $resp->message);
 	}
 	$resp = $validatorObj->isValid($local_field, "drupalfields", "Local Field", true);
+	if (!$resp->result) {
+		form_set_error($user->name, $resp->message);
+	}
+	$resp = $validatorObj->isValid($local_type_field_format, "drupalfields", "Local Type Field Format", true);
 	if (!$resp->result) {
 		form_set_error($user->name, $resp->message);
 	}
@@ -454,6 +459,7 @@ function scoopit_api_save_mapping (&$form, &$form_state) {
 	$remote_field = isset($_POST['remote_field'])?$_POST['remote_field']:'';
 	$local_type = isset($_POST['local_type'])?$_POST['local_type']:'';
 	$local_field = isset($_POST['local_field'])?$_POST['local_field']:'';
+	$local_type_field_format = isset($_POST['local_type_field_format'])?$_POST['local_type_field_format']:'';
 
 	$result = db_select('scoopit_api_content_map', 'c')
 		->fields('c')
@@ -465,6 +471,8 @@ function scoopit_api_save_mapping (&$form, &$form_state) {
 		->fetchAssoc();
 
 	if(!$result){
+
+		variable_set($local_type.'_field_format',$local_type_field_format);
 
 		$values = array(
 			array(

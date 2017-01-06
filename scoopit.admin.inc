@@ -233,6 +233,8 @@ function scoopit_mapping_settings_form() {
 		$local_options[$type->type] = $type->name;
 	}
 
+	$field_format_val = '';
+
 	# the values for the dropdown box
 	$form['local_options'] = array(
 		'#type' => 'value',
@@ -257,14 +259,47 @@ function scoopit_mapping_settings_form() {
 		$form['local_type'] = array(
 			'#title' => t('Local Content Type'),
 			'#type' => 'textfield',
-			'#description' => "Local Content Type.",
+			'#description' => "Local Content Type. To change the main content field text format remove all the current mappings.",
 			//'#options' => $form['local_options']['#value'],
 			'#attributes' => array('readonly' => 'readonly','id'=>'local_type'),
 			'#value' => ''.$data->local_type,
 		);
+
+		$field_format_val = variable_get($data->local_type.'_field_format','');
 	}
 
+	$filter_formats_arr = filter_formats();
 
+	$field_format_options = array();//array('full_html'=>'full html', 'filtered_html'=>'filtered html', 'plain_text'=>'plain text', 'php'=>'php');
+
+
+	foreach ($filter_formats_arr as $item)
+	{
+		$field_format_options[$item->format]=$item->name;
+	}
+
+	if($field_format_val==='' || $form['local_type']['#type']==='select')
+	{
+		$form['local_type_field_format'] = array(
+			'#title' => t('Field Format'),
+			'#type' => 'select',
+			'#description' => "Select Field Format.",
+			'#options' => $field_format_options,
+			'#attributes' => array('id'=>'local_type_field_format'),
+			'#value' => $field_format_val,
+		);
+	}
+	else
+	{
+		$form['local_type_field_format'] = array(
+			//'#title' => t('Field Format'),
+			'#type' => 'hidden',
+			//'#description' => "Select Field Format.",
+			//'#options' => $field_format_options,
+			'#attributes' => array('id'=>'local_type_field_format'),
+			'#value' => $field_format_val,
+		);
+	}
 
 	$form['local_field'] = array(
 		'#title' => t('Local Content Field'),
