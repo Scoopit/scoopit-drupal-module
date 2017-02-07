@@ -254,7 +254,7 @@ class DnaContentMapService extends DnaMainService
 
 			$remoteObject->local_type = $localContentType;
 			$remoteObject->state = ($dataNode->status == 1) ? 'published' : 'scheduled';
-			$remoteObject->scoopit_language = (($dataNode->language === 'und') ? $lang_default->language : $dataNode->language);//language;
+			$remoteObject->scoopit_language = $dataNode->language;
 			$remoteObject->id = $dataNode->field_scoopit_id[$dataNode->language][0]['value'];//force users to create this field
 			$remoteObject->publicationDate = date('Y-m-d H:i:s O', $dataNode->created);
 
