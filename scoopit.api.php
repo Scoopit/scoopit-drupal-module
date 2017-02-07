@@ -11,7 +11,7 @@ define('SERVER_ENVIRONMENT','Test');
 define('MAX_SCOOP_IT_OBJECT',50);
 define('SCOOPIT_API_LOCAL_SERVER',$_SERVER["HTTP_HOST"].'/'.$base_path);
 define('SCOOPIT_API_SERVER_SCHEME',((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? 'https://' : 'http://'));
-define('SCOOPIT_API_VERSION','1.0');
+define('SCOOPIT_API_VERSION','1.1');
 
 require_once "scoopit.library.loader.php";
 //functions used for web request
