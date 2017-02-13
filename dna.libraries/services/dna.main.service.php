@@ -31,8 +31,6 @@ class DnaMainService
 		//needs checking
 		global $language;
 		$lang_name = $this->check_if_language_exist($scoopit_language);//LANGUAGE_NONE;//$language->language;
-		$setSummaryValue = FALSE;
-		$setContentFieldName = FALSE;
 
 		$field_format_val = variable_get($nodeContentType . '_field_format', '');
 
@@ -109,13 +107,7 @@ class DnaMainService
           }*/
 					else {
 						if ($field == 'scoopit_summary') {
-
-							$setSummaryValue = $fieldValue;
-							if ($setContentFieldName) {
-								$nodeFieldValue = $node->$setContentFieldName;
-								$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'summary')][0]['summary'] = $setSummaryValue;
-								$node->$setContentFieldName = $nodeFieldValue;
-							}
+							// handled in text_textarea_with_summary field type
 							continue;
 						}
 					}
@@ -129,11 +121,10 @@ class DnaMainService
 
 				if (trim($fieldInfo['widget']['type']) == 'text_textarea_with_summary') {
 					$nodeFieldValue = array();
-					$setContentFieldName = $field;
 					$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'body')][0]['value'] = $fieldValue;
 					$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'body')][0]['format'] = (trim('' . $field_format_val) === '') ? 'full_html' : $field_format_val;
-					if ($setSummaryValue) {
-						$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'summary')][0]['summary'] = $setSummaryValue;
+					if($nodeFieldValues['scoopit_summary']) {
+						$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'summary')][0]['summary'] = $nodeFieldValues['scoopit_summary'];
 					}
 					$node->$field = $nodeFieldValue;
 				} else {
@@ -201,12 +192,12 @@ class DnaMainService
 	{
 		$node = node_load($nodeId);
 
+		error_log("UPDATE: ".print_r($node, true));
+
 		$lang_name = $this->check_if_language_exist($scoopit_language);//LANGUAGE_NONE;//$language->language;
 
 		$fieldInfos = field_info_instances("node", $node->type);
 
-		$setSummaryValue = FALSE;
-		$setContentFieldName = FALSE;
 		$imagePresent = FALSE;
 		$imageField = '';
 
@@ -300,13 +291,7 @@ class DnaMainService
           }*/
 					else {
 						if ($field == 'scoopit_summary') {
-
-							$setSummaryValue = $fieldValue;
-							if ($setContentFieldName) {
-								$nodeFieldValue = $node->$setContentFieldName;
-								$nodeFieldValue[/*$node->language*/$this->pick_field_language($node->language,'summary')][0]['summary'] = $setSummaryValue;
-								$node->$setContentFieldName = $nodeFieldValue;
-							}
+							// Ignore field as it is handled in field type text_textarea_with_summary
 							continue;
 						}
 					}
@@ -320,11 +305,10 @@ class DnaMainService
 
 				if (trim($fieldInfo['widget']['type']) == 'text_textarea_with_summary') {
 					$nodeFieldValue = array();
-					$setContentFieldName = $field;
-					$nodeFieldValue[$node->language][0]['value'] = $fieldValue;
-					$nodeFieldValue[$node->language][0]['format'] = (trim('' . $field_format_val) === '') ? 'full_html' : $field_format_val;
-					if ($setSummaryValue) {
-						$nodeFieldValue[$node->language][0][/*$node->language*/$this->pick_field_language($node->language,'summary')] = $setSummaryValue;
+					$nodeFieldValue[$this->pick_field_language($node->language,'body')][0]['value'] = $fieldValue;
+					$nodeFieldValue[$this->pick_field_language($node->language,'body')][0]['format'] = (trim('' . $field_format_val) === '') ? 'full_html' : $field_format_val;
+					if($nodeFieldValues['scoopit_summary']) {
+						$nodeFieldValue[$this->pick_field_language($node->language,'summary')][0]['summary'] = $nodeFieldValues['scoopit_summary'];
 					}
 					$node->$field = $nodeFieldValue;
 				} else {
@@ -350,6 +334,9 @@ class DnaMainService
 			if (!$imagePresent && $imageField != '') {
 				$node->$imageField = "";
 			}
+
+			error_log("BY: ".print_r($node, true));
+
 
 			node_save($node);
 
