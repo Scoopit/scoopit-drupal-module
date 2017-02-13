@@ -192,8 +192,6 @@ class DnaMainService
 	{
 		$node = node_load($nodeId);
 
-		error_log("UPDATE: ".print_r($node, true));
-
 		$lang_name = $this->check_if_language_exist($scoopit_language);//LANGUAGE_NONE;//$language->language;
 
 		$fieldInfos = field_info_instances("node", $node->type);
@@ -335,9 +333,6 @@ class DnaMainService
 			if (!$imagePresent && $imageField != '') {
 				$node->$imageField = "";
 			}
-
-			error_log("BY: ".print_r($node, true));
-
 
 			node_save($node);
 
